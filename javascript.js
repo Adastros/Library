@@ -30,10 +30,18 @@ function showBooksinLibrary() {
   });
 }
 
-overlayButtonOpen.addEventListener("click", () => {
+function showOverlay() {
   overlay.style.width = "100%";
+}
+
+function hideOverlay() {
+  overlay.style.width = "0%";
+}
+
+overlayButtonOpen.addEventListener("click", () => {
+  showOverlay();
 });
 
 overlayButtonClose.addEventListener("click", () => {
-  overlay.style.width = "0%";
+  hideOverlay();
 });
