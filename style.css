@@ -16,12 +16,27 @@ body {
   position: relative;
 }
 
+form {
+  height: 350px;
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.5rem;
+  border: 2px solid black;
+  border-radius: 8px;
+}
+
 input[type="text"] {
   width: 100%;
   padding: 0.25rem;
   border: 2px solid black;
   border-radius: 8px;
 }
+
+/* input[type="checkbox"] {
+
+} */
 
 .card {
   height: 300px;
@@ -36,15 +51,46 @@ input[type="text"] {
   align-items: center;
 }
 
+.close-overlay {
+  margin: 0;
+  background-color: rgba(0, 0, 0, 0);
+  border: none;
+  position: absolute;
+  top: calc(50% - 250px);
+  right: calc(50% - 200px);
+}
+
+.close-overlay:hover {
+  filter: brightness(0.7);
+}
+
 .create-button {
   height: 50px;
   width: 50px;
-  font-size: calc(1rem * 2);
+  font-size: 2rem;
   border-radius: 50%;
 }
 
 .create-button::after {
   content: "+";
+}
+
+.icon {
+  height: 50px;
+  width: 50px;
+}
+
+.overlay {
+  height: 100%;
+  width: 0%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  left: 0;
+  position: absolute;
+  overflow-x: hidden;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 .border {

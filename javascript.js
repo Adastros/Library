@@ -1,5 +1,7 @@
 let myLibrary = [],
-  html = document.getElementsByName("html");
+  overlayButtonOpen = document.querySelector(".create-button"),
+  overlay = document.querySelector(".overlay"),
+  overlayButtonClose = document.querySelector(".close-overlay");
 
 function Book(title, author, pages, read) {
   this.title = title;
@@ -27,3 +29,11 @@ function showBooksinLibrary() {
     return book.info();
   });
 }
+
+overlayButtonOpen.addEventListener("click", () => {
+  overlay.style.width = "100%";
+});
+
+overlayButtonClose.addEventListener("click", () => {
+  overlay.style.width = "0%";
+});
