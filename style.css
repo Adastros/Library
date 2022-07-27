@@ -1,0 +1,64 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+body {
+  height: 100%;
+  width: 100%;
+  margin: auto;
+  position: relative;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 0.25rem;
+  border: 2px solid black;
+  border-radius: 8px;
+}
+
+.card {
+  height: 300px;
+  width: 200px;
+  border: 2px solid black;
+  border-radius: 8px;
+}
+
+.card.book-create {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.create-button {
+  height: 50px;
+  width: 50px;
+  font-size: calc(1rem * 2);
+  border-radius: 50%;
+}
+
+.create-button::after {
+  content: "+";
+}
+
+.border {
+  width: 100%;
+  margin: 2rem 0;
+  border: 1px solid black;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 1fr);
+  grid-auto-rows: 1fr;
+}
+
+.shadow {
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+}
