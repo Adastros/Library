@@ -3,6 +3,7 @@ let myLibrary = [],
   overlay = document.querySelector(".overlay"),
   overlayButtonClose = document.querySelector(".close-overlay"),
   addBooktToLibraryButton = document.querySelector(".add-book-button"),
+  bookGrid = document.querySelector(".grid-container"),
   form = document.querySelector("form"),
   formFields = form.elements;
 
@@ -20,6 +21,15 @@ function Book(title, author, pages, read) {
 
     return `${this.title} by ${this.author}, ${this.pages} pages, ${readBook}`;
   };
+}
+
+function createBookCard() {
+  let card = document.createElement("div"),
+    newestBook = myLibrary[myLibrary.length - 1];
+
+  card.classList.add("card", "shadow");
+  card.textContent = newestBook.info();
+  bookGrid.prepend(card);
 }
 
 function addBooktoLibrary(title, author, pages, read) {
@@ -56,5 +66,6 @@ addBooktToLibraryButton.addEventListener("click", () => {
     read = formFields[3].checked;
 
   addBooktoLibrary(title, author, pages, read);
+  createBookCard();
   hideOverlay();
 });
