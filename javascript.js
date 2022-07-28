@@ -13,13 +13,9 @@ function Book(title, author, pages, read) {
   this.pages = pages;
   this.read = read;
   this.info = () => {
-    let readBook = "not read yet";
+    let readBook = this.read ? "read book" : "not read yet";
 
-    if (this.read) {
-      readBook = "read book";
-    }
-
-    return `${this.title} by ${this.author}, ${this.pages} pages, ${readBook}`;
+    return [this.title, `by ${this.author}`,  `Pages: ${this.pages}`, readBook];
   };
 }
 
@@ -28,12 +24,18 @@ function createBookCard() {
     newestBook = myLibrary[myLibrary.length - 1];
 
   card.classList.add("card", "shadow");
-  card.textContent = newestBook.info();
+
+  newestBook.info().forEach((info,i) => {
+    let infoField = (i === 0) ? document.createElement("h2") : document.createElement("p");
+    
+    infoField.textContent = info;
+    card.append(infoField);
+  });
+
   bookGrid.prepend(card);
 }
 
 function addBooktoLibrary(title, author, pages, read) {
-  //let title = new Book(title, author, pages, read);
   myLibrary.push(new Book(title, author, pages, read));
 }
 

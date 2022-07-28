@@ -40,6 +40,19 @@ input[type="text"] {
 
 } */
 
+.add-button {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  background-color: var(--header-button-color);
+  border: none;
+  border-radius: 16px;
+}
+
+.add-button:hover {
+  filter: brightness(0.8);
+}
+
 .border {
   width: 100%;
   margin-top: 0.5rem;
@@ -55,6 +68,9 @@ input[type="text"] {
 .card {
   height: 300px;
   width: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   border: 2px solid black;
   border-radius: 8px;
 }
@@ -76,19 +92,6 @@ input[type="text"] {
 
 .close-overlay:hover {
   filter: brightness(0.7);
-}
-
-.create-button {
-  display: flex;
-  align-items: center;
-  padding: 0.5rem 1rem;
-  background-color: var(--header-button-color);
-  border: none;
-  border-radius: 16px;
-}
-
-.create-button:hover {
-  filter: brightness(0.8);
 }
 
 .grid-container {
