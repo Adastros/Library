@@ -10,14 +10,17 @@
     <header>
       <h1>Library</h1>
       <h2>A web app where you can log and track all of the books you read</h2>
+      <button class="add-button">
+        <img
+          class="button-icon"
+          src="./icons/plus.svg"
+          alt="Plus symbol inside a button"
+        />Add to Library
+      </button>
     </header>
     <div class="border"></div>
     <main>
-      <div class="grid-container">
-        <div class="card book-create shadow">
-          <button class="create-button"></button>
-        </div>
-      </div>
+      <div class="grid-container"></div>
     </main>
     <div class="overlay">
       <button type="button" class="close-overlay">
@@ -39,7 +42,7 @@
         <div class="form-field">
           <label for="read">Read?</label>
           <input id="read" type="checkbox" />
-          <input type="hidden" value="off">
+          <input type="hidden" value="off" />
         </div>
         <button class="add-book-button" type="button">Log Book</button>
       </form>

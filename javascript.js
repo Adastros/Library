@@ -1,5 +1,5 @@
 let myLibrary = [],
-  overlayButtonOpen = document.querySelector(".create-button"),
+  overlayButtonOpen = document.querySelector(".add-button"),
   overlay = document.querySelector(".overlay"),
   overlayButtonClose = document.querySelector(".close-overlay"),
   addBooktToLibraryButton = document.querySelector(".add-book-button"),
