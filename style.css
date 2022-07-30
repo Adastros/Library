@@ -18,6 +18,12 @@ body {
   position: relative;
 }
 
+button {
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
 form {
   height: 350px;
   width: 250px;
@@ -45,7 +51,6 @@ input[type="text"] {
   align-items: center;
   padding: 0.5rem 1rem;
   background-color: var(--header-button-color);
-  border: none;
   border-radius: 16px;
 }
 
@@ -73,6 +78,7 @@ input[type="text"] {
   align-items: center;
   border: 2px solid black;
   border-radius: 8px;
+  position: relative;
 }
 
 .card.book-create {
@@ -94,13 +100,28 @@ input[type="text"] {
   filter: brightness(0.7);
 }
 
+.edit {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+}
+
+.edit:hover {
+  filter: brightness(0.9);
+}
+
 .grid-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(215px, 1fr));
   grid-auto-rows: minmax(315px, 1fr);
 }
 
-.icon {
+.icon-medium {
+  height: 30px;
+  width: 30px;
+}
+
+.icon-large {
   height: 50px;
   width: 50px;
 }
