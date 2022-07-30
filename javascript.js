@@ -151,6 +151,16 @@ function hideOverlay() {
   overlay.style.width = "0%";
 }
 
+function clearOverlayForm() {
+  for (let i = 0; i < formFields.length; i++) {
+    if (formFields[i].id === "read") {
+      formFields[i].checked = false;
+    } else {
+      formFields[i].value = "";
+    }
+  }
+}
+
 overlayButtonOpen.addEventListener("click", () => {
   editBookFlag = false;
   showOverlay();
@@ -159,6 +169,7 @@ overlayButtonOpen.addEventListener("click", () => {
 overlayButtonClose.addEventListener("click", () => {
   editBookFlag = false;
   hideOverlay();
+  clearOverlayForm();
 });
 
 addBooktToLibraryButton.addEventListener("click", () => {
@@ -176,4 +187,5 @@ addBooktToLibraryButton.addEventListener("click", () => {
   }
 
   hideOverlay();
+  clearOverlayForm();
 });
