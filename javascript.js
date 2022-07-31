@@ -2,11 +2,157 @@ let myLibrary = [],
   overlayButtonOpen = document.querySelector(".add-button"),
   overlay = document.querySelector(".overlay"),
   overlayButtonClose = document.querySelector(".close-overlay"),
-  addBooktToLibraryButton = document.querySelector(".add-book-button"),
+  submitBookButton = document.querySelector(".add-book-button"),
   bookGrid = document.querySelector(".grid-container"),
   form = document.querySelector("form"),
   formFields = form.elements,
   editBookFlag = false;
+
+const formError = {
+  title: {
+    valueMissingErrorMessage: "Please enter a book title.",
+  },
+  author: {
+    valueMissingErrorMessage: "Please enter an author for the book.",
+  },
+  pagesRead: {
+    valueMissingErrorMessage: "Please enter the amount of pages you've read.",
+    rangeUnderFlowErrorMessage:
+      "Please enter a valid number for the pages read.",
+  },
+};
+
+function checkForErrorType(formField) {
+  if (formField.validity.valueMissing) {
+    displayErrorMessage(formField, "valueMissingErrorMessage");
+    setErrorState(formField);
+  } else if (formField.validity.rangeUnderflow) {
+    displayErrorMessage(formField, "rangeUnderFlowErrorMessage");
+    setErrorState(formField);
+  } else {
+    setValidState(formField);
+  }
+}
+
+function displayErrorMessage(formField, messageType) {
+  let ErrorMessageField =
+      formField.parentElement.nextElementSibling.firstElementChild,
+    errorMessage = formError[formField.name][messageType];
+
+  if (errorMessage) {
+    ErrorMessageField.textContent = errorMessage;
+  } else {
+    console.log(
+      `Error: ${formField.name} does not have a corresponding ${messageType}.`
+    );
+  }
+}
+
+function setErrorState(formField) {
+  removeAsValid(formField);
+  setAsError(formField);
+  showErrorField(formField);
+  showErrorIcon(formField);
+  showIcon(formField);
+}
+
+function setValidState(formField) {
+  removeAsError(formField);
+  hideErrorField(formField);
+  setAsValid(formField);
+  showValidIcon(formField);
+  showIcon(formField);
+}
+
+function resetValidationState() {
+  for (let i = 0; i < formFields.length - 2; i++) {
+    removeAsValid(formFields[i]);
+    removeAsError(formFields[i]);
+    hideErrorField(formFields[i]);
+    hideFormIcons(formFields[i]);
+  }
+}
+
+function setAsError(formField) {
+  if (!formField.classList.contains("error")) {
+    formField.classList.toggle("error");
+  }
+}
+
+function removeAsError(formField) {
+  if (formField.classList.contains("error")) {
+    formField.classList.toggle("error");
+  }
+}
+
+function showErrorField(formField) {
+  let errorField = formField.parentElement.nextElementSibling;
+
+  if (errorField.classList.contains("hide")) {
+    errorField.classList.toggle("hide");
+  }
+}
+
+function hideErrorField(formField) {
+  let errorField = formField.parentElement.nextElementSibling;
+
+  if (!errorField.classList.contains("hide")) {
+    errorField.classList.toggle("hide");
+    errorField.firstElementChild.textContent = "";
+  }
+}
+
+function setAsValid(formField) {
+  if (!formField.classList.contains("valid")) {
+    formField.classList.toggle("valid");
+  }
+}
+
+function removeAsValid(formField) {
+  if (formField.classList.contains("valid")) {
+    formField.classList.toggle("valid");
+  }
+}
+
+function showIcon(formField) {
+  let icon = formField.parentElement,
+    visibility = window
+      .getComputedStyle(icon, "::after")
+      .getPropertyValue("visibility");
+
+  if (visibility === "hidden") {
+    icon.style.setProperty("--visibility", "visible");
+  }
+}
+
+function hideFormIcons(formField) {
+  let icon = formField.parentElement,
+    visibility = window
+      .getComputedStyle(icon, "::after")
+      .getPropertyValue("visibility");
+
+  if (visibility !== "hidden") {
+    icon.style.setProperty("--visibility", "hidden");
+  }
+}
+
+function showErrorIcon(formField) {
+  let icon = formField.parentElement;
+
+  icon.style.setProperty(
+    "--icon-url",
+    `url("./icons/error_FILL0_wght400_GRAD0_opsz48.svg")`
+  );
+}
+
+function showValidIcon(formField) {
+  let icon = formField.parentElement;
+
+  icon.style.setProperty(
+    "--icon-url",
+    `url("./icons/check_circle_FILL0_wght400_GRAD0_opsz48-green.svg")`
+  );
+}
 
 function Book(title, author, pages, read) {
   this.title = title;
@@ -85,7 +231,7 @@ function createEditIconElement() {
 
 function addEditButtonListener(editButton) {
   editButton.addEventListener("click", (e) => {
-    let cardIndex = e.currentTarget.parentElement.dataset.index;
+    let cardIndex = +e.currentTarget.parentElement.dataset.index;
 
     editBookFlag = true;
     fillOverlayForm(cardIndex);
@@ -126,7 +272,8 @@ function updateBookDisplay() {
     cardToUpdate = document.querySelector(`[data-index="${cardIndex}"]`),
     cardFields = cardToUpdate.children;
 
-  // Update only elements that user can change which are the first 4 elements. All other child elements ignored.
+  // Update only elements that user can change which are the first 4 elements.
+  // All other child elements ignored.
   book.getInfo().forEach((info, i) => {
     cardFields[i].textContent = addContextToInfo(info, i);
   });
@@ -152,7 +299,7 @@ function hideOverlay() {
 }
 
 function clearOverlayForm() {
-  for (let i = 0; i < formFields.length; i++) {
+  for (let i = 0; i < formFields.length - 1; i++) {
     if (formFields[i].id === "read") {
       formFields[i].checked = false;
     } else {
@@ -169,23 +316,45 @@ overlayButtonOpen.addEventListener("click", () => {
 overlayButtonClose.addEventListener("click", () => {
   editBookFlag = false;
   hideOverlay();
+  resetValidationState();
   clearOverlayForm();
 });
 
-addBooktToLibraryButton.addEventListener("click", () => {
-  let title = formFields[0].value,
-    author = formFields[1].value,
-    pages = formFields[2].value,
-    read = formFields[3].checked;
-
-  if (editBookFlag) {
-    editBook();
-    updateBookDisplay();
-  } else {
-    addBooktoLibrary(title, author, pages, read);
-    createBookCard();
+form.addEventListener("submit", (e) => {
+  for (let i = 0; i < formFields.length - 2; i++) {
+    checkForErrorType(formFields[i]);
   }
 
-  hideOverlay();
-  clearOverlayForm();
+  if (!form.querySelector(".error")) {
+    let title = formFields[0].value,
+      author = formFields[1].value,
+      pages = formFields[2].value,
+      read = formFields[3].checked;
+    if (editBookFlag) {
+      editBook();
+      updateBookDisplay();
+    } else {
+      addBooktoLibrary(title, author, pages, read);
+      createBookCard();
+    }
+
+    hideOverlay();
+    resetValidationState();
+    clearOverlayForm();
+  }
+
+  e.preventDefault();
 });
+
+// No need to check submit button and checkbox for errors
+for (let i = 0; i < formFields.length - 2; i++) {
+  // Lazy form validation
+  // Trigger aggressive validation once out of focus
+  formFields[i].addEventListener("focusout", (e) => {
+    if (!e.target.validity.valid) {
+      checkForErrorType(e.target);
+    } else {
+      setValidState(e.target);
+    }
+  });
+}

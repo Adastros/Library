@@ -26,25 +26,45 @@
       <button type="button" class="close-overlay">
         <img class="icon-large" src="./icons/close.svg" alt="" />
       </button>
-      <form action="" data-card-index-edit="">
+      <form action="" data-card-index-edit="" novalidate>
         <div class="form-field">
           <label for="title">Title:</label>
-          <input id="title" type="text" />
+          <span class="icon-small">
+            <input id="title" type="text" name="title" required />
+          </span>
+          <div class="error-field hide">
+            <p class="error-message"></p>
+          </div>
         </div>
         <div class="form-field">
           <label for="author">Author:</label>
-          <input id="author" type="text" />
+          <span class="icon-small">
+            <input id="author" type="text" name="author" required />
+          </span>
+          <div class="error-field hide">
+            <p class="error-message"></p>
+          </div>
         </div>
         <div class="form-field">
-          <label for="pages">Pages:</label>
-          <input id="pages" type="text" />
+          <label for="pages-read">Pages Read:</label>
+          <span class="icon-small">
+            <input
+              id="pages-read"
+              type="number"
+              name="pagesRead"
+              min="0"
+              required
+            />
+          </span>
+          <div class="error-field hide">
+            <p class="error-message"></p>
+          </div>
         </div>
         <div class="form-field">
           <label for="read">Read?</label>
-          <input id="read" type="checkbox" />
-          <input type="hidden" value="off" />
+          <input id="read" type="checkbox" name="read" />
         </div>
-        <button class="add-book-button" type="button">Log Book</button>
+        <button class="add-book-button" type="submit">Submit</button>
       </form>
     </div>
   </body>

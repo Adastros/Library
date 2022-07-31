@@ -4,6 +4,10 @@
 
 :root {
   --header-button-color: #24a0ed;
+  --valid: #00ff00;
+  --visibility: hidden;
+  --error: #ff0000;
+  --icon-url: "";
 
   height: 100%;
   display: flex;
@@ -35,16 +39,23 @@ form {
   border-radius: 8px;
 }
 
-input[type="text"] {
+input[type="text"],
+input[type="number"] {
   width: 100%;
   padding: 0.25rem;
   border: 2px solid black;
   border-radius: 8px;
 }
 
-/* input[type="checkbox"] {
+input.valid {
+  border-color: var(--valid);
+  box-shadow: 0 0 2px var(--valid);
+}
 
-} */
+input.error {
+  border-color: var(--error);
+  box-shadow: 0 0 2px var(--error);
+}
 
 .add-button {
   display: flex;
@@ -114,6 +125,27 @@ input[type="text"] {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(215px, 1fr));
   grid-auto-rows: minmax(315px, 1fr);
+}
+
+.hide {
+  visibility: hidden;
+}
+
+.icon-small {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.icon-small::after {
+  content: "";
+  background-image: var(--icon-url);
+  background-size: contain;
+  background-repeat: no-repeat;
+  display: inline-block;
+  height: 1.5rem;
+  width: 1.5rem;
+  visibility: var(--visibility);
 }
 
 .icon-medium {
