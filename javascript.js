@@ -6,6 +6,7 @@ let myLibrary = [],
   bookGrid = document.querySelector(".grid-container"),
   form = document.querySelector("form"),
   formFields = form.elements,
+  numOfFieldsToValidate = formFields.length - 1,
   editBookFlag = false;
 
 const formError = {
@@ -19,6 +20,9 @@ const formError = {
     valueMissingErrorMessage: "Please enter the amount of pages you've read.",
     rangeUnderFlowErrorMessage:
       "Please enter a valid number for the pages read.",
+  },
+  readStatus: {
+    valueMissingErrorMessage: "Please select a read status.",
   },
 };
 
@@ -65,7 +69,7 @@ function setValidState(formField) {
 }
 
 function resetValidationState() {
-  for (let i = 0; i < formFields.length - 2; i++) {
+  for (let i = 0; i < numOfFieldsToValidate; i++) {
     removeAsValid(formFields[i]);
     removeAsError(formFields[i]);
     hideErrorField(formFields[i]);
@@ -154,14 +158,14 @@ function showValidIcon(formField) {
   );
 }
 
-function Book(title, author, pages, read) {
+function Book(title, author, pages, readStatus) {
   this.title = title;
   this.author = author;
   this.pages = pages;
-  this.read = read;
+  this.readStatus = readStatus;
 
   this.getInfo = () => {
-    return [this.title, this.author, this.pages, this.read];
+    return [this.title, this.author, this.pages, this.readStatus];
   };
 }
 
@@ -244,12 +248,7 @@ function fillOverlayForm(cardIndex) {
 
   form.dataset.cardIndexEdit = cardIndex;
   book.getInfo().forEach((info, i) => {
-    if (i === 3) {
-      // checkbox field
-      formFields[i].checked = info;
-    } else {
-      formFields[i].value = info;
-    }
+    formFields[i].value = info;
   });
 }
 
@@ -258,9 +257,7 @@ function editBook() {
     book = myLibrary[cardIndex];
 
   Object.keys(book).forEach((key, i) => {
-    if (key === "read") {
-      book[key] = formFields[i].checked;
-    } else if (key !== "getInfo") {
+    if (key !== "getInfo") {
       book[key] = formFields[i].value;
     }
   });
@@ -280,8 +277,8 @@ function updateBookDisplay() {
   editBookFlag = false;
 }
 
-function addBooktoLibrary(title, author, pages, read) {
-  myLibrary.push(new Book(title, author, pages, read));
+function addBooktoLibrary(title, author, pages, readStatus) {
+  myLibrary.push(new Book(title, author, pages, readStatus));
 }
 
 function showBooksinLibrary() {
@@ -299,9 +296,9 @@ function hideOverlay() {
 }
 
 function clearOverlayForm() {
-  for (let i = 0; i < formFields.length - 1; i++) {
-    if (formFields[i].id === "read") {
-      formFields[i].checked = false;
+  for (let i = 0; i < numOfFieldsToValidate; i++) {
+    if (formFields[i].name === "readStatus") {
+      formFields[i].value = "";
     } else {
       formFields[i].value = "";
     }
@@ -321,20 +318,22 @@ overlayButtonClose.addEventListener("click", () => {
 });
 
 form.addEventListener("submit", (e) => {
-  for (let i = 0; i < formFields.length - 2; i++) {
+  for (let i = 0; i < numOfFieldsToValidate; i++) {
     checkForErrorType(formFields[i]);
   }
 
   if (!form.querySelector(".error")) {
-    let title = formFields[0].value,
-      author = formFields[1].value,
-      pages = formFields[2].value,
-      read = formFields[3].checked;
+    let bookInfo = [];
+
+    for (let i = 0; i < numOfFieldsToValidate; i++) {
+      bookInfo.push(formFields[i].value);
+    }
+    
     if (editBookFlag) {
       editBook();
       updateBookDisplay();
     } else {
-      addBooktoLibrary(title, author, pages, read);
+      addBooktoLibrary(...bookInfo);
       createBookCard();
     }
 
@@ -346,10 +345,9 @@ form.addEventListener("submit", (e) => {
   e.preventDefault();
 });
 
-// No need to check submit button and checkbox for errors
-for (let i = 0; i < formFields.length - 2; i++) {
-  // Lazy form validation
-  // Trigger aggressive validation once out of focus
+// Lazy form validation
+// No need to check submit button for errors
+for (let i = 0; i < numOfFieldsToValidate; i++) {
   formFields[i].addEventListener("focusout", (e) => {
     if (!e.target.validity.valid) {
       checkForErrorType(e.target);
