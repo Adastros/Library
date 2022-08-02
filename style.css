@@ -4,6 +4,7 @@
 
 :root {
   --header-button-color: #24a0ed;
+  --delete-button-color: #dc3545;
   --valid: #00ff00;
   --visibility: hidden;
   --error: #ff0000;
@@ -110,6 +111,10 @@ input.error {
 
 .close-overlay:hover {
   filter: brightness(0.7);
+}
+
+.delete-button {
+  background-color: var(--delete-button-color);
 }
 
 .edit {

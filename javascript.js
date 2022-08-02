@@ -6,8 +6,8 @@ let myLibrary = [],
   bookGrid = document.querySelector(".grid-container"),
   form = document.querySelector("form"),
   formFields = form.elements,
-  numOfFieldsToValidate = formFields.length - 1,
-  editBookFlag = false;
+  deleteButton = formFields[formFields.length - 1];
+(numOfFieldsToValidate = 4), (editBookFlag = false);
 
 const formError = {
   title: {
@@ -239,6 +239,7 @@ function addEditButtonListener(editButton) {
 
     editBookFlag = true;
     fillOverlayForm(cardIndex);
+    showDeleteButton();
     showOverlay();
   });
 }
@@ -250,6 +251,18 @@ function fillOverlayForm(cardIndex) {
   book.getInfo().forEach((info, i) => {
     formFields[i].value = info;
   });
+}
+
+function showDeleteButton() {
+  if (deleteButton.classList.contains("hide")) {
+    deleteButton.classList.toggle("hide");
+  }
+}
+
+function hideDeleteButton() {
+  if (!deleteButton.classList.contains("hide")) {
+    deleteButton.classList.toggle("hide");
+  }
 }
 
 function editBook() {
@@ -305,6 +318,34 @@ function clearOverlayForm() {
   }
 }
 
+function resetForm() {
+  resetValidationState();
+  clearOverlayForm();
+  hideDeleteButton();
+}
+
+function deleteBookFromLibrary() {
+  let cardIndex = +form.dataset.cardIndexEdit,
+    card = document.querySelector(`[data-index="${cardIndex}"]`);
+
+  myLibrary.splice(cardIndex, 1);
+  updateCardIndex(cardIndex, card);
+  card.remove();
+  hideOverlay();
+  resetForm();
+}
+
+function updateCardIndex(cardIndex, card) {
+  let cardToUpdate = card.previousElementSibling;
+
+  // library length is 1 less due to splice
+  while (cardIndex < myLibrary.length) {
+    cardToUpdate.dataset.index = cardIndex;
+    cardToUpdate = cardToUpdate.previousElementSibling;
+    cardIndex++;
+  }
+}
+
 overlayButtonOpen.addEventListener("click", () => {
   editBookFlag = false;
   showOverlay();
@@ -313,8 +354,11 @@ overlayButtonOpen.addEventListener("click", () => {
 overlayButtonClose.addEventListener("click", () => {
   editBookFlag = false;
   hideOverlay();
-  resetValidationState();
-  clearOverlayForm();
+  resetForm();
+});
+
+deleteButton.addEventListener("click", (e) => {
+  deleteBookFromLibrary(e.currentTarget);
 });
 
 form.addEventListener("submit", (e) => {
@@ -328,7 +372,7 @@ form.addEventListener("submit", (e) => {
     for (let i = 0; i < numOfFieldsToValidate; i++) {
       bookInfo.push(formFields[i].value);
     }
-    
+
     if (editBookFlag) {
       editBook();
       updateBookDisplay();
@@ -338,8 +382,7 @@ form.addEventListener("submit", (e) => {
     }
 
     hideOverlay();
-    resetValidationState();
-    clearOverlayForm();
+    resetForm();
   }
 
   e.preventDefault();
