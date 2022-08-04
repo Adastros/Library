@@ -84,20 +84,35 @@ input.error {
 }
 
 .card {
-  height: 300px;
-  width: 200px;
+  height: 100%;
+  width: 100%;
   display: flex;
-  flex-direction: column;
-  align-items: center;
   border: 2px solid black;
   border-radius: 8px;
   position: relative;
 }
 
-.card.book-create {
-  display: flex;
-  justify-content: center;
+.card h2,
+.card p {
+  margin: 0;
+}
+
+.card.card-style {
+  flex-direction: column;
+  justify-content: space-around;
   align-items: center;
+}
+
+.card.list-style {
+  flex-direction: row;
+  align-items: center;
+  flex: 1;
+  padding: 0 1rem;
+}
+
+.card.list-style h2,
+.card.list-style p {
+  flex: 1;
 }
 
 .close-overlay {
@@ -117,20 +132,35 @@ input.error {
   background-color: var(--delete-button-color);
 }
 
-.edit {
+.edit-card-style {
   position: absolute;
   top: 0.5rem;
   right: 0.5rem;
 }
 
-.edit:hover {
+.edit-card-style:hover {
+  filter: brightness(0.9);
+}
+
+.edit-list-style:hover {
   filter: brightness(0.9);
 }
 
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(215px, 1fr));
-  grid-auto-rows: minmax(315px, 1fr);
+  gap: 1rem;
+}
+
+.grid-view {
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-auto-rows: minmax(300px, 1fr);
+}
+
+.header-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
 }
 
 .hide {
@@ -164,6 +194,11 @@ input.error {
   width: 50px;
 }
 
+.list-view {
+  grid-template-columns: minmax(600px, 1fr);
+  grid-auto-rows: 3rem;
+}
+
 .overlay {
   height: 100%;
   width: 0%;
@@ -179,4 +214,20 @@ input.error {
 
 .shadow {
   box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+}
+
+.view-button {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  gap: 0.25rem;
+  padding: 0 0.5rem; 
+}
+
+.view-button:hover {
+  filter: brightness(0.8);
+}
+
+.view-button-container {
+  display: flex;
 }

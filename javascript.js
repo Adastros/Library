@@ -1,13 +1,16 @@
 let myLibrary = [],
   overlayButtonOpen = document.querySelector(".add-button"),
+  listViewButton = overlayButtonOpen.nextElementSibling.firstElementChild,
+  gridViewButton = listViewButton.nextElementSibling,
   overlay = document.querySelector(".overlay"),
   overlayButtonClose = document.querySelector(".close-overlay"),
   submitBookButton = document.querySelector(".add-book-button"),
   bookGrid = document.querySelector(".grid-container"),
   form = document.querySelector("form"),
   formFields = form.elements,
-  deleteButton = formFields[formFields.length - 1];
-(numOfFieldsToValidate = 4), (editBookFlag = false);
+  deleteButton = formFields[formFields.length - 1],
+  numOfFieldsToValidate = 4,
+  editBookFlag = false;
 
 const formError = {
   title: {
@@ -174,6 +177,11 @@ function createBookCard() {
     editButton = createEditButtonElement(),
     newestBook = myLibrary[myLibrary.length - 1];
 
+  if (bookGrid.classList.contains("grid-view")) {
+    card.classList.add("card-style");
+  } else {
+    card.classList.add("list-style");
+  }
   card.classList.add("card", "shadow");
   card.setAttribute("data-index", myLibrary.length - 1);
 
@@ -217,7 +225,7 @@ function createEditButtonElement() {
   let button = document.createElement("button"),
     icon = createEditIconElement();
 
-  button.classList.add("edit");
+  button.classList.add("edit-card-style");
   button.append(icon);
 
   return button;
@@ -346,6 +354,32 @@ function updateCardIndex(cardIndex, card) {
   }
 }
 
+function updateLibraryView(view, viewStyle) {
+  if (!bookGrid.classList.contains(view)) {
+    updateView();
+    updateBookInfoDisplay(viewStyle);
+  }
+}
+
+function updateView() {
+  bookGrid.classList.toggle("list-view");
+  bookGrid.classList.toggle("grid-view");
+}
+
+function updateBookInfoDisplay(viewStyle) {
+  let allBooksInLibrary = document.querySelectorAll(".card");
+
+  allBooksInLibrary.forEach((book) => {
+    let editBtn = book.lastElementChild;
+    if (!book.classList.contains(viewStyle)) {
+      book.classList.toggle("card-style");
+      book.classList.toggle("list-style");
+      editBtn.classList.toggle("edit-card-style");
+      editBtn.classList.toggle("edit-list-style");
+    }
+  });
+}
+
 overlayButtonOpen.addEventListener("click", () => {
   editBookFlag = false;
   showOverlay();
@@ -355,6 +389,18 @@ overlayButtonClose.addEventListener("click", () => {
   editBookFlag = false;
   hideOverlay();
   resetForm();
+});
+
+listViewButton.addEventListener("click", (e) => {
+  let view = e.currentTarget.dataset.view,
+    viewStyle = e.currentTarget.dataset.viewStyle;
+  updateLibraryView(view, viewStyle);
+});
+
+gridViewButton.addEventListener("click", (e) => {
+  let view = e.currentTarget.dataset.view,
+    viewStyle = e.currentTarget.dataset.viewStyle;
+  updateLibraryView(view, viewStyle);
 });
 
 deleteButton.addEventListener("click", (e) => {
