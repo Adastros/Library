@@ -21,8 +21,10 @@ const formError = {
   },
   pagesRead: {
     valueMissingErrorMessage: "Please enter the amount of pages you've read.",
-    rangeUnderFlowErrorMessage:
+    rangeUnderflowErrorMessage:
       "Please enter a valid number for the pages read.",
+    rangeOverflowErrorMessage:
+      "Please enter a valid number under 50,000 for the pages read.",
   },
   readStatus: {
     valueMissingErrorMessage: "Please select a read status.",
@@ -34,7 +36,10 @@ function checkForErrorType(formField) {
     displayErrorMessage(formField, "valueMissingErrorMessage");
     setErrorState(formField);
   } else if (formField.validity.rangeUnderflow) {
-    displayErrorMessage(formField, "rangeUnderFlowErrorMessage");
+    displayErrorMessage(formField, "rangeUnderflowErrorMessage");
+    setErrorState(formField);
+  } else if (formField.validity.rangeOverflow) {
+    displayErrorMessage(formField, "rangeOverflowErrorMessage");
     setErrorState(formField);
   } else {
     setValidState(formField);
