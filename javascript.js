@@ -9,17 +9,20 @@ let myLibrary = [],
   form = document.querySelector("form"),
   formFields = form.elements,
   deleteButton = formFields[formFields.length - 1],
-  numOfFieldsToValidate = 4,
+  numOfFieldsToValidate = formFields.length - 2,
   editBookFlag = false;
 
-const formError = {
+const formFieldObjs = {
   title: {
+    validateAggressive: false,
     valueMissingErrorMessage: "Please enter a book title.",
   },
   author: {
+    validateAggressive: false,
     valueMissingErrorMessage: "Please enter an author for the book.",
   },
   pagesRead: {
+    validateAggressive: false,
     valueMissingErrorMessage: "Please enter the amount of pages you've read.",
     rangeUnderflowErrorMessage:
       "Please enter a valid number for the pages read.",
@@ -27,6 +30,7 @@ const formError = {
       "Please enter a valid number under 50,000 for the pages read.",
   },
   readStatus: {
+    validateAggressive: false,
     valueMissingErrorMessage: "Please select a read status.",
   },
 };
@@ -49,7 +53,7 @@ function checkForErrorType(formField) {
 function displayErrorMessage(formField, messageType) {
   let ErrorMessageField =
       formField.parentElement.nextElementSibling.firstElementChild,
-    errorMessage = formError[formField.name][messageType];
+    errorMessage = formFieldObjs[formField.name][messageType];
 
   if (errorMessage) {
     ErrorMessageField.textContent = errorMessage;
@@ -164,6 +168,23 @@ function showValidIcon(formField) {
     "--icon-url",
     `url("./icons/check_circle_FILL0_wght400_GRAD0_opsz48-green.svg")`
   );
+}
+
+function setAggressiveValidation(formField, bool) {
+  formFieldObjs[formField].validateAggressive = bool;
+}
+
+function getAggressiveValidation(formField) {
+  return formFieldObjs[formField].validateAggressive;
+}
+
+function validateOnSubmit() {
+  for (let i = 0; i < numOfFieldsToValidate; i++) {
+    if (!formFields[i].validity.valid) {
+      checkForErrorType(formFields[i]);
+      setAggressiveValidation(formFields[i].name, true);
+    }
+  }
 }
 
 function Book(title, author, pages, readStatus) {
@@ -413,9 +434,7 @@ deleteButton.addEventListener("click", (e) => {
 });
 
 form.addEventListener("submit", (e) => {
-  for (let i = 0; i < numOfFieldsToValidate; i++) {
-    checkForErrorType(formFields[i]);
-  }
+  validateOnSubmit();
 
   if (!form.querySelector(".error")) {
     let bookInfo = [];
@@ -440,13 +459,33 @@ form.addEventListener("submit", (e) => {
 });
 
 // Lazy form validation
+// Trigger aggressive validation once out of focus
 // No need to check submit button for errors
 for (let i = 0; i < numOfFieldsToValidate; i++) {
   formFields[i].addEventListener("focusout", (e) => {
     if (!e.target.validity.valid) {
       checkForErrorType(e.target);
+      setAggressiveValidation(e.target.name, true);
     } else {
       setValidState(e.target);
+      setAggressiveValidation(e.target.name, false);
+    }
+  });
+}
+
+// Aggressive form validation
+// Resets/ disabled when form field is valid
+// No need to validate submit button for errors
+for (let i = 0; i < numOfFieldsToValidate; i++) {
+  formFields[i].addEventListener("input", (e) => {
+    console.log(getAggressiveValidation(e.target.name));
+    if (getAggressiveValidation(e.target.name)) {
+      if (!e.target.validity.valid) {
+        checkForErrorType(e.target);
+      } else {
+        setValidState(e.target);
+        setAggressiveValidation(e.target.name, false);
+      }
     }
   });
 }
