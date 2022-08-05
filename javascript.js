@@ -251,7 +251,11 @@ function createEditButtonElement() {
   let button = document.createElement("button"),
     icon = createEditIconElement();
 
-  button.classList.add("edit-card-style");
+  if (bookGrid.classList.contains("grid-view")) {
+    button.classList.add("edit-card-style");
+  } else {
+    button.classList.add("edit-list-style");
+  }
   button.append(icon);
 
   return button;
@@ -400,6 +404,8 @@ function updateBookInfoDisplay(viewStyle) {
     if (!book.classList.contains(viewStyle)) {
       book.classList.toggle("card-style");
       book.classList.toggle("list-style");
+    }
+    if (!editBtn.classList.contains("edit-" + viewStyle)) {
       editBtn.classList.toggle("edit-card-style");
       editBtn.classList.toggle("edit-list-style");
     }
@@ -478,7 +484,6 @@ for (let i = 0; i < numOfFieldsToValidate; i++) {
 // No need to validate submit button for errors
 for (let i = 0; i < numOfFieldsToValidate; i++) {
   formFields[i].addEventListener("input", (e) => {
-    console.log(getAggressiveValidation(e.target.name));
     if (getAggressiveValidation(e.target.name)) {
       if (!e.target.validity.valid) {
         checkForErrorType(e.target);
