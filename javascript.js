@@ -1,7 +1,8 @@
 let myLibrary = [],
   overlayButtonOpen = document.querySelector(".add-button"),
   demoButton = overlayButtonOpen.nextElementSibling,
-  listViewButton = overlayButtonOpen.parentElement.nextElementSibling.firstElementChild,
+  listViewButton =
+    overlayButtonOpen.parentElement.nextElementSibling.firstElementChild,
   gridViewButton = listViewButton.nextElementSibling,
   overlay = document.querySelector(".overlay"),
   overlayButtonClose = document.querySelector(".close-overlay"),
@@ -12,6 +13,47 @@ let myLibrary = [],
   deleteButton = formFields[formFields.length - 1],
   numOfFieldsToValidate = formFields.length - 2,
   editBookFlag = false;
+
+const demoLibraryData = [
+  {
+    title: "The Hobbit",
+    author: "J. R. R. Tolkien",
+    pages: 310,
+    readStatus: "Want to Read",
+  },
+  {
+    title: "Infernal Devices",
+    author: "K.W. Jeter",
+    pages: 384,
+    readStatus: "Reading",
+  },
+  {
+    title:
+      "Some We Love, Some We Hate, Some We Eat: Why It's So Hard to Think Straight About Animals",
+    author: "Hal Herzog",
+    pages: 326,
+    readStatus: "Want to Read",
+  },
+  {
+    title: "Delicate Edible Birds and Other Stories",
+    author: "Lauren Groff",
+    pages: 306,
+    readStatus: "Finished Reading",
+  },
+  {
+    title: "You Have a Friend in 10A: Stories",
+    author: "Maggie Shipstead",
+    pages: 272,
+    readStatus: "Stopped Reading",
+  },
+  {
+    title:
+      "Talking to Strangers: What We Should Know About the People We Don’t Know",
+    author: "Malcolm Gladwell",
+    pages: 388,
+    readStatus: "Want to Read",
+  },
+];
 
 const formFieldObjs = {
   title: {
@@ -201,8 +243,8 @@ function Book(title, author, pages, readStatus) {
 
 function createBookCard() {
   let card = document.createElement("div"),
-    editButton = createEditButtonElement(),
-    newestBook = myLibrary[myLibrary.length - 1];
+    editButton = createEditButtonElement();
+  newestBook = myLibrary[myLibrary.length - 1];
 
   if (bookGrid.classList.contains("grid-view")) {
     card.classList.add("card-style");
@@ -422,6 +464,24 @@ overlayButtonClose.addEventListener("click", () => {
   editBookFlag = false;
   hideOverlay();
   resetForm();
+});
+
+demoButton.addEventListener("click", () => {
+  // reset library to demo library
+  if (myLibrary) {
+    myLibrary = [];
+    while (bookGrid.firstChild) {
+      bookGrid.removeChild(bookGrid.firstChild);
+    }
+  }
+
+  demoLibraryData.forEach((obj) => {
+    let bookInfo = Object.keys(obj).map((key) => {
+      return obj[key];
+    });
+    addBooktoLibrary(...bookInfo);
+    createBookCard();
+  });
 });
 
 listViewButton.addEventListener("click", (e) => {
