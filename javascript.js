@@ -1,4 +1,5 @@
 let myLibrary = [],
+  bodyElement = document.querySelector("body"),
   overlayButtonOpen = document.querySelector(".add-button"),
   demoButton = overlayButtonOpen.nextElementSibling,
   listViewButton =
@@ -6,12 +7,11 @@ let myLibrary = [],
   gridViewButton = listViewButton.nextElementSibling,
   overlay = document.querySelector(".overlay"),
   overlayButtonClose = document.querySelector(".close-overlay"),
-  submitBookButton = document.querySelector(".add-book-button"),
   bookGrid = document.querySelector(".grid-container"),
   form = document.querySelector("form"),
   formFields = form.elements,
-  deleteButton = formFields[formFields.length - 1],
-  numOfFieldsToValidate = formFields.length - 2,
+  deleteButton = document.querySelector(".delete-button"),
+  numOfFieldsToValidate = formFields.length - 3,
   editBookFlag = false;
 
 const demoLibraryData = [
@@ -383,10 +383,12 @@ function showBooksinLibrary() {
 
 function showOverlay() {
   overlay.style.width = "100%";
+  bodyElement.style.overflow = "hidden";
 }
 
 function hideOverlay() {
   overlay.style.width = "0%";
+  bodyElement.style.overflow = "visible";
 }
 
 function clearOverlayForm() {
@@ -527,7 +529,7 @@ form.addEventListener("submit", (e) => {
 
 // Lazy form validation
 // Trigger aggressive validation once out of focus
-// No need to check submit button for errors
+// No need to check last three buttons for errors
 for (let i = 0; i < numOfFieldsToValidate; i++) {
   formFields[i].addEventListener("focusout", (e) => {
     if (!e.target.validity.valid) {
@@ -542,7 +544,7 @@ for (let i = 0; i < numOfFieldsToValidate; i++) {
 
 // Aggressive form validation
 // Resets/ disabled when form field is valid
-// No need to validate submit button for errors
+// No need to validate last three button for errors
 for (let i = 0; i < numOfFieldsToValidate; i++) {
   formFields[i].addEventListener("input", (e) => {
     if (getAggressiveValidation(e.target.name)) {
