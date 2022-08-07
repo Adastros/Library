@@ -1,6 +1,7 @@
 let myLibrary = [],
   overlayButtonOpen = document.querySelector(".add-button"),
-  listViewButton = overlayButtonOpen.nextElementSibling.firstElementChild,
+  demoButton = overlayButtonOpen.nextElementSibling,
+  listViewButton = overlayButtonOpen.parentElement.nextElementSibling.firstElementChild,
   gridViewButton = listViewButton.nextElementSibling,
   overlay = document.querySelector(".overlay"),
   overlayButtonClose = document.querySelector(".close-overlay"),

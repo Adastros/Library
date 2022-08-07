@@ -3,53 +3,67 @@
   <head>
     <meta charset="UTF-8" />
     <link href="./style.css" rel="stylesheet" />
-    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto&family=Signika&display=swap"
+      rel="stylesheet"
+    />
+    <title>Library | A web app to track books</title>
     <script src="./javascript.js" defer></script>
   </head>
   <body>
-    <header>
-      <h1>Library</h1>
-      <h2>A web app where you can log and track all of the books you read</h2>
-      <div class="header-buttons">
-        <button class="add-button">
+    <div class="body-subcontainer">
+      <header class="shadow">
+        <div class="site-name">
+          <h1>Library</h1>
           <img
-            class="button-icon"
-            src="./icons/plus.svg"
-            alt="Plus symbol inside a button"
-          />Add to Library
-        </button>
-        <div class="view-button-container">
-          <button
-            class="view-button"
-            data-view="list-view"
-            data-view-style="list-style"
-          >
-            <img
-              class="icon-medium"
-              src="./icons/view-list.svg"
-              alt="list view icon"
-            />
-            List View
-          </button>
-          <button
-            class="view-button"
-            data-view="grid-view"
-            data-view-style="grid-style"
-          >
-            <img
-              class="icon-medium"
-              src="./icons/view-grid.svg"
-              alt="grid view icon"
-            />
-            Grid View
-          </button>
+            class="icon-medium"
+            src="./icons/book-open-page-variant-outline.svg"
+            alt="Library Logo"
+          />
         </div>
-      </div>
-    </header>
-    <div class="border"></div>
-    <main>
-      <div class="grid-container grid-view"></div>
-    </main>
+        <h3>A web app where you can log and track all of the books you read</h3>
+        <div class="header-buttons">
+          <button class="add-button">
+            <img
+              class="button-icon"
+              src="./icons/plus.svg"
+              alt="Plus symbol inside a button"
+            />Add to Library
+          </button>
+          <div class="view-button-container">
+            <button
+              class="view-button"
+              data-view="list-view"
+              data-view-style="list-style"
+            >
+              <img
+                class="icon-medium"
+                src="./icons/view-list.svg"
+                alt="list view icon"
+              />
+              List View
+            </button>
+            <button
+              class="view-button"
+              data-view="grid-view"
+              data-view-style="grid-style"
+            >
+              <img
+                class="icon-medium"
+                src="./icons/view-grid.svg"
+                alt="grid view icon"
+              />
+              Grid View
+            </button>
+          </div>
+        </div>
+      </header>
+      <main>
+        <div class="grid-container grid-view"></div>
+      </main>
+    </div>
     <div class="overlay">
       <button type="button" class="close-overlay">
         <img class="icon-large" src="./icons/close.svg" alt="" />
