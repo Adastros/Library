@@ -31,6 +31,10 @@ button {
   border: none;
 }
 
+button:hover {
+  filter: brightness(0.8);
+}
+
 form {
   width: 350px;
   display: flex;
@@ -91,16 +95,6 @@ main {
   padding: 0.5rem 1rem;
   background-color: var(--header-button-color);
   border-radius: 16px;
-}
-
-.add-button:hover,
-.demo-button:hover,
-.delete-button:hover,
-.edit-card-style:hover,
-.edit-list-style:hover,
-.submit-button:hover,
-.view-button:hover {
-  filter: brightness(0.8);
 }
 
 .body-subcontainer {
@@ -191,15 +185,6 @@ main {
   justify-content: space-around;
   align-items: center;
 }
-
-/* .edit-delete-button-container {
-} */
-
-/* .edit-button-card-position {
-  position: absolute;
-  bottom: 0.5rem;
-  right: 0.5rem;
-} */
 
 .error-message {
   color: var(--error);

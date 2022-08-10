@@ -282,6 +282,7 @@ function createBookCard() {
 // Adds more text to book information to make the text on the card readable
 function addContextToInfo(info, index) {
   let contextualizedInfo = "";
+  
   switch (index) {
     case 1:
       contextualizedInfo = `by ${info}`;
@@ -308,12 +309,6 @@ function createCardButtonContainer() {
 function createEditButtonElement() {
   let button = document.createElement("button"),
     icon = createEditIconElement();
-
-  // if (bookGrid.classList.contains("grid-view")) {
-  //   button.classList.add("edit-button-card-position");
-  // } else {
-  //   button.classList.add("edit-button-list-position");
-  // }
 
   button.append(icon);
   addEditButtonListener(button);
@@ -344,12 +339,6 @@ function addEditButtonListener(editButton) {
 function createDeleteButtonElement() {
   let button = document.createElement("button"),
     icon = createDeleteIconElement();
-
-  // if (bookGrid.classList.contains("grid-view")) {
-  //   button.classList.add("delete-button-card-position");
-  // } else {
-  //   button.classList.add("delete-button-list-position");
-  // }
 
   button.append(icon);
   addDeleteButtonListener(button);
