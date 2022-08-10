@@ -246,6 +246,7 @@ function Book(title, author, pages, readStatus) {
 
 function createBookCard() {
   let card = document.createElement("div"),
+    bookInfoContainer = createBookInfoContainer(),
     buttonContainer = createCardButtonContainer(),
     editButton = createEditButtonElement(),
     deleteButton = createDeleteButtonElement(),
@@ -263,17 +264,18 @@ function createBookCard() {
     let infoField;
 
     if (i === 0) {
-      infoField = document.createElement("h2");
+      infoField = document.createElement("h4");
     } else {
       infoField = document.createElement("p");
     }
 
     infoField.textContent = addContextToInfo(info, i);
-    card.append(infoField);
+    bookInfoContainer.append(infoField);
   });
 
   buttonContainer.append(editButton);
   buttonContainer.append(deleteButton);
+  card.append(bookInfoContainer);
   card.append(buttonContainer);
 
   bookGrid.prepend(card);
@@ -282,7 +284,7 @@ function createBookCard() {
 // Adds more text to book information to make the text on the card readable
 function addContextToInfo(info, index) {
   let contextualizedInfo = "";
-  
+
   switch (index) {
     case 1:
       contextualizedInfo = `by ${info}`;
@@ -296,6 +298,14 @@ function addContextToInfo(info, index) {
   }
 
   return contextualizedInfo;
+}
+
+function createBookInfoContainer() {
+  let container = document.createElement("div");
+
+  container.classList.add("card-book-info-container");
+
+  return container;
 }
 
 function createCardButtonContainer() {
