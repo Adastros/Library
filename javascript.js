@@ -5,13 +5,16 @@ let myLibrary = [],
   listViewButton =
     overlayButtonOpen.parentElement.nextElementSibling.firstElementChild,
   gridViewButton = listViewButton.nextElementSibling,
-  overlay = document.querySelector(".overlay"),
+  formOverlay = document.querySelector(".submit-edit-form"),
+  deletionConfirmationOverlay = document.querySelector(".delete-confirmation"),
   overlayButtonClose = document.querySelector(".close-overlay"),
   bookGrid = document.querySelector(".grid-container"),
   form = document.querySelector("form"),
   formFields = form.elements,
-  deleteButton = document.querySelector(".delete-button"),
-  numOfFieldsToValidate = formFields.length - 3,
+  deleteConfirmation = document.querySelector(".delete-confirmation-container"),
+  deletionButtonYes = document.querySelector(".delete-button"),
+  deletionButtonNo = document.querySelector(".no-button"),
+  numOfFieldsToValidate = formFields.length - 2,
   editBookFlag = false;
 
 const demoLibraryData = [
@@ -243,8 +246,10 @@ function Book(title, author, pages, readStatus) {
 
 function createBookCard() {
   let card = document.createElement("div"),
-    editButton = createEditButtonElement();
-  newestBook = myLibrary[myLibrary.length - 1];
+    buttonContainer = createCardButtonContainer(),
+    editButton = createEditButtonElement(),
+    deleteButton = createDeleteButtonElement(),
+    newestBook = myLibrary[myLibrary.length - 1];
 
   if (bookGrid.classList.contains("grid-view")) {
     card.classList.add("card-style");
@@ -267,8 +272,10 @@ function createBookCard() {
     card.append(infoField);
   });
 
-  addEditButtonListener(editButton);
-  card.append(editButton);
+  buttonContainer.append(editButton);
+  buttonContainer.append(deleteButton);
+  card.append(buttonContainer);
+
   bookGrid.prepend(card);
 }
 
@@ -290,16 +297,26 @@ function addContextToInfo(info, index) {
   return contextualizedInfo;
 }
 
+function createCardButtonContainer() {
+  let container = document.createElement("div");
+
+  container.classList.add("card-button-container");
+
+  return container;
+}
+
 function createEditButtonElement() {
   let button = document.createElement("button"),
     icon = createEditIconElement();
 
-  if (bookGrid.classList.contains("grid-view")) {
-    button.classList.add("edit-card-style");
-  } else {
-    button.classList.add("edit-list-style");
-  }
+  // if (bookGrid.classList.contains("grid-view")) {
+  //   button.classList.add("edit-button-card-position");
+  // } else {
+  //   button.classList.add("edit-button-list-position");
+  // }
+
   button.append(icon);
+  addEditButtonListener(button);
 
   return button;
 }
@@ -316,12 +333,46 @@ function createEditIconElement() {
 
 function addEditButtonListener(editButton) {
   editButton.addEventListener("click", (e) => {
-    let cardIndex = +e.currentTarget.parentElement.dataset.index;
+    let cardIndex = +e.currentTarget.parentElement.parentElement.dataset.index;
 
     editBookFlag = true;
     fillOverlayForm(cardIndex);
-    showDeleteButton();
-    showOverlay();
+    showFormOverlay();
+  });
+}
+
+function createDeleteButtonElement() {
+  let button = document.createElement("button"),
+    icon = createDeleteIconElement();
+
+  // if (bookGrid.classList.contains("grid-view")) {
+  //   button.classList.add("delete-button-card-position");
+  // } else {
+  //   button.classList.add("delete-button-list-position");
+  // }
+
+  button.append(icon);
+  addDeleteButtonListener(button);
+
+  return button;
+}
+
+function createDeleteIconElement() {
+  let icon = document.createElement("img");
+
+  icon.classList.add("icon-medium");
+  icon.setAttribute("src", "./icons/delete.svg");
+  icon.setAttribute("alt", "Delete icon");
+
+  return icon;
+}
+
+function addDeleteButtonListener(deleteButton) {
+  deleteButton.addEventListener("click", (e) => {
+    let cardIndex = +e.currentTarget.parentElement.parentElement.dataset.index;
+
+    deleteConfirmation.dataset.cardIndexTarget = cardIndex;
+    showDeletionConfirmationOverlay();
   });
 }
 
@@ -332,18 +383,6 @@ function fillOverlayForm(cardIndex) {
   book.getInfo().forEach((info, i) => {
     formFields[i].value = info;
   });
-}
-
-function showDeleteButton() {
-  if (deleteButton.classList.contains("hide")) {
-    deleteButton.classList.toggle("hide");
-  }
-}
-
-function hideDeleteButton() {
-  if (!deleteButton.classList.contains("hide")) {
-    deleteButton.classList.toggle("hide");
-  }
 }
 
 function editBook() {
@@ -381,13 +420,23 @@ function showBooksinLibrary() {
   });
 }
 
-function showOverlay() {
-  overlay.style.width = "100%";
+function showFormOverlay() {
+  formOverlay.style.width = "100%";
+  bodyElement.style.overflow = "hidden"; // prevent page scoll when overlay is shown
+}
+
+function hideFormOverlay() {
+  formOverlay.style.width = "0%";
+  bodyElement.style.overflow = "visible";
+}
+
+function showDeletionConfirmationOverlay() {
+  deletionConfirmationOverlay.style.width = "100%";
   bodyElement.style.overflow = "hidden";
 }
 
-function hideOverlay() {
-  overlay.style.width = "0%";
+function hideDeletionConfirmationOverlay() {
+  deletionConfirmationOverlay.style.width = "0%";
   bodyElement.style.overflow = "visible";
 }
 
@@ -404,18 +453,16 @@ function clearOverlayForm() {
 function resetForm() {
   resetValidationState();
   clearOverlayForm();
-  hideDeleteButton();
 }
 
 function deleteBookFromLibrary() {
-  let cardIndex = +form.dataset.cardIndexEdit,
+  let cardIndex = +deleteConfirmation.dataset.cardIndexTarget,
     card = document.querySelector(`[data-index="${cardIndex}"]`);
 
   myLibrary.splice(cardIndex, 1);
   updateCardIndex(cardIndex, card);
   card.remove();
-  hideOverlay();
-  resetForm();
+  hideDeletionConfirmationOverlay();
 }
 
 function updateCardIndex(cardIndex, card) {
@@ -451,20 +498,20 @@ function updateBookInfoDisplay(viewStyle) {
       book.classList.toggle("list-style");
     }
     if (!editBtn.classList.contains("edit-" + viewStyle)) {
-      editBtn.classList.toggle("edit-card-style");
-      editBtn.classList.toggle("edit-list-style");
+      editBtn.classList.toggle("edit-button-card-position");
+      editBtn.classList.toggle("edit-button-list-position");
     }
   });
 }
 
 overlayButtonOpen.addEventListener("click", () => {
   editBookFlag = false;
-  showOverlay();
+  showFormOverlay();
 });
 
 overlayButtonClose.addEventListener("click", () => {
   editBookFlag = false;
-  hideOverlay();
+  hideFormOverlay();
   resetForm();
 });
 
@@ -498,10 +545,6 @@ gridViewButton.addEventListener("click", (e) => {
   updateLibraryView(view, viewStyle);
 });
 
-deleteButton.addEventListener("click", (e) => {
-  deleteBookFromLibrary(e.currentTarget);
-});
-
 form.addEventListener("submit", (e) => {
   validateOnSubmit();
 
@@ -520,16 +563,25 @@ form.addEventListener("submit", (e) => {
       createBookCard();
     }
 
-    hideOverlay();
+    hideFormOverlay();
     resetForm();
   }
 
   e.preventDefault();
 });
 
+deletionButtonYes.addEventListener("click", () => {
+  deleteBookFromLibrary();
+});
+
+deletionButtonNo.addEventListener("click", () => {
+  hideDeletionConfirmationOverlay();
+  hideFormOverlay();
+});
+
 // Lazy form validation
 // Trigger aggressive validation once out of focus
-// No need to check last three buttons for errors
+// No need to check last two buttons for errors
 for (let i = 0; i < numOfFieldsToValidate; i++) {
   formFields[i].addEventListener("focusout", (e) => {
     if (!e.target.validity.valid) {
@@ -544,7 +596,7 @@ for (let i = 0; i < numOfFieldsToValidate; i++) {
 
 // Aggressive form validation
 // Resets/ disabled when form field is valid
-// No need to validate last three button for errors
+// No need to validate last two button for errors
 for (let i = 0; i < numOfFieldsToValidate; i++) {
   formFields[i].addEventListener("input", (e) => {
     if (getAggressiveValidation(e.target.name)) {

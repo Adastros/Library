@@ -67,7 +67,7 @@
         <div class="grid-container grid-view"></div>
       </main>
     </div>
-    <div class="overlay">
+    <div class="submit-edit-form overlay">
       <form action="" data-card-index-edit="" novalidate>
         <div class="form-field">
           <label for="title">Title:</label>
@@ -131,7 +131,6 @@
           </div>
         </div>
         <button class="submit-button" type="submit">Submit</button>
-        <button class="delete-button hide" type="button">Delete</button>
         <button type="button" class="close-overlay">
           <img
             class="icon-large"
@@ -140,6 +139,15 @@
           />
         </button>
       </form>
+    </div>
+    <div class="delete-confirmation overlay">
+      <div class="delete-confirmation-container" data-card-index-target="">
+        <p>Are you sure you want to delete the book from your library?</p>
+        <div class="delete-confirmation-buttons">
+          <button class="delete-button">Yes</button>
+          <button class="no-button">No</button>
+        </div>
+      </div>
     </div>
   </body>
 </html>
