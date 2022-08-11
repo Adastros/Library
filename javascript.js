@@ -1,22 +1,23 @@
-let myLibrary = [],
-  bodyElement = document.querySelector("body"),
+let bodyElement = document.querySelector("body"),
   overlayButtonOpen = document.querySelector(".add-button"),
   demoButton = overlayButtonOpen.nextElementSibling,
   listViewButton =
     overlayButtonOpen.parentElement.nextElementSibling.firstElementChild,
   gridViewButton = listViewButton.nextElementSibling,
   formOverlay = document.querySelector(".submit-edit-form"),
-  deletionConfirmationOverlay = document.querySelector(".delete-confirmation"),
   overlayButtonClose = document.querySelector(".close-overlay"),
   bookGrid = document.querySelector(".grid-container"),
   form = document.querySelector("form"),
   formFields = form.elements,
-  firstFormInput = formFields[0];
+  firstFormInput = formFields[0],
+  deletionConfirmationOverlay = document.querySelector(".delete-confirmation"),
   deleteConfirmation = document.querySelector(".delete-confirmation-container"),
   deletionButtonYes = document.querySelector(".delete-button"),
   deletionButtonNo = document.querySelector(".no-button"),
   numOfFieldsToValidate = formFields.length - 2,
   editBookFlag = false;
+
+let myLibrary = [];
 
 const demoLibraryData = [
   {
@@ -517,10 +518,19 @@ overlayButtonOpen.addEventListener("click", () => {
 });
 
 overlayButtonClose.addEventListener("click", () => {
+  let cardIndex = form.dataset.cardIndexEdit;
+
   editBookFlag = false;
   hideFormOverlay();
   resetForm();
-  shiftElementFocus(overlayButtonOpen);
+
+  if (cardIndex) {
+    let cardTarget = document.querySelector(`[data-index="${cardIndex}"]`),
+      editBtn = cardTarget.lastElementChild.firstElementChild;
+    shiftElementFocus(editBtn);
+  } else {
+    shiftElementFocus(overlayButtonOpen);
+  }
 });
 
 demoButton.addEventListener("click", () => {
@@ -585,9 +595,13 @@ deletionButtonYes.addEventListener("click", () => {
 });
 
 deletionButtonNo.addEventListener("click", () => {
+  let cardIndex = deleteConfirmation.dataset.cardIndexTarget,
+    cardTarget = document.querySelector(`[data-index="${cardIndex}"]`),
+    deleteBtn = cardTarget.lastElementChild.lastElementChild;
+
   hideDeletionConfirmationOverlay();
   hideFormOverlay();
-  shiftElementFocus(overlayButtonOpen);
+  shiftElementFocus(deleteBtn);
 });
 
 // Lazy form validation
