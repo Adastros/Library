@@ -17,6 +17,8 @@
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
     Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
     "Segoe UI Symbol";
+  --lh: 1.2rem;
+  line-height: var(--lh);
 }
 
 body {
@@ -50,6 +52,17 @@ form {
 h1 {
   margin: 1rem 0;
   font-family: "Signika";
+}
+
+/* 
+Relevent links:
+https://css-tricks.com/line-clampin/
+https://stackoverflow.com/questions/33058004/applying-an-ellipsis-to-multiline-text
+*/
+h4 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 header {
@@ -141,6 +154,10 @@ main {
   justify-content: space-between;
 }
 
+.card-style h4 {
+  -webkit-line-clamp: 6;
+}
+
 .card-style > .card-book-info-container {
   flex-direction: column;
   justify-content: space-around;
@@ -165,6 +182,7 @@ main {
 
 .list-style h4 {
   flex: 4;
+  -webkit-line-clamp: 2;
 }
 
 .list-style p {
