@@ -375,7 +375,7 @@ function addDeleteButtonListener(deleteButton) {
 
     deleteConfirmation.dataset.cardIndexTarget = cardIndex;
     showDeletionConfirmationOverlay();
-    shiftElementFocus(deletionButtonYes);
+    shiftElementFocus(deletionButtonNo);
   });
 }
 
