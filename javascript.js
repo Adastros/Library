@@ -11,6 +11,7 @@ let myLibrary = [],
   bookGrid = document.querySelector(".grid-container"),
   form = document.querySelector("form"),
   formFields = form.elements,
+  firstFormInput = formFields[0];
   deleteConfirmation = document.querySelector(".delete-confirmation-container"),
   deletionButtonYes = document.querySelector(".delete-button"),
   deletionButtonNo = document.querySelector(".no-button"),
@@ -343,6 +344,7 @@ function addEditButtonListener(editButton) {
     editBookFlag = true;
     fillOverlayForm(cardIndex);
     showFormOverlay();
+    shiftElementFocus(firstFormInput);
   });
 }
 
@@ -372,6 +374,7 @@ function addDeleteButtonListener(deleteButton) {
 
     deleteConfirmation.dataset.cardIndexTarget = cardIndex;
     showDeletionConfirmationOverlay();
+    shiftElementFocus(deletionButtonYes);
   });
 }
 
@@ -427,6 +430,10 @@ function showFormOverlay() {
 function hideFormOverlay() {
   formOverlay.style.width = "0%";
   bodyElement.style.overflow = "visible";
+}
+
+function shiftElementFocus(element) {
+  element.focus({ preventScroll: true });
 }
 
 function showDeletionConfirmationOverlay() {
@@ -506,12 +513,14 @@ function updateBookInfoDisplay(viewStyle) {
 overlayButtonOpen.addEventListener("click", () => {
   editBookFlag = false;
   showFormOverlay();
+  shiftElementFocus(firstFormInput);
 });
 
 overlayButtonClose.addEventListener("click", () => {
   editBookFlag = false;
   hideFormOverlay();
   resetForm();
+  shiftElementFocus(overlayButtonOpen);
 });
 
 demoButton.addEventListener("click", () => {
@@ -564,6 +573,7 @@ form.addEventListener("submit", (e) => {
 
     hideFormOverlay();
     resetForm();
+    shiftElementFocus(overlayButtonOpen);
   }
 
   e.preventDefault();
@@ -571,11 +581,13 @@ form.addEventListener("submit", (e) => {
 
 deletionButtonYes.addEventListener("click", () => {
   deleteBookFromLibrary();
+  shiftElementFocus(overlayButtonOpen);
 });
 
 deletionButtonNo.addEventListener("click", () => {
   hideDeletionConfirmationOverlay();
   hideFormOverlay();
+  shiftElementFocus(overlayButtonOpen);
 });
 
 // Lazy form validation
