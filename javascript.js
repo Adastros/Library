@@ -290,7 +290,7 @@ function addContextToInfo(info, index) {
       contextualizedInfo = `by ${info}`;
       break;
     case 2:
-      contextualizedInfo = `Pages: ${info}`;
+      contextualizedInfo = `Pages Read: ${info}`;
       break;
     default:
       contextualizedInfo = info;
@@ -385,8 +385,8 @@ function fillOverlayForm(cardIndex) {
 }
 
 function editBook() {
-  let cardIndex = +form.dataset.cardIndexEdit,
-    book = myLibrary[cardIndex];
+  let cardIndex = form.dataset.cardIndexEdit,
+    book = myLibrary[+cardIndex];
 
   Object.keys(book).forEach((key, i) => {
     if (key !== "getInfo") {
@@ -397,9 +397,9 @@ function editBook() {
 
 function updateBookDisplay() {
   let cardIndex = form.dataset.cardIndexEdit,
-    book = myLibrary[cardIndex],
+    book = myLibrary[+cardIndex],
     cardToUpdate = document.querySelector(`[data-index="${cardIndex}"]`),
-    cardFields = cardToUpdate.children;
+    cardFields = cardToUpdate.firstElementChild.children;
 
   // Update only elements that user can change which are the first 4 elements.
   // All other child elements ignored.
