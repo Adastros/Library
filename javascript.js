@@ -84,18 +84,21 @@ const formFieldObjs = {
 };
 
 function checkForErrorType(formField) {
-  if (formField.validity.valueMissing) {
-    displayErrorMessage(formField, "valueMissingErrorMessage");
-    setErrorState(formField);
-  } else if (formField.validity.rangeUnderflow) {
-    displayErrorMessage(formField, "rangeUnderflowErrorMessage");
-    setErrorState(formField);
-  } else if (formField.validity.rangeOverflow) {
-    displayErrorMessage(formField, "rangeOverflowErrorMessage");
-    setErrorState(formField);
-  } else {
-    setValidState(formField);
+  switch (true) {
+    case formField.validity.valueMissing:
+      displayErrorMessage(formField, "valueMissingErrorMessage");
+      break;
+    case formField.validity.rangeUnderflow:
+      displayErrorMessage(formField, "rangeUnderflowErrorMessage");
+      break;
+    case formField.validity.rangeOverflow:
+      displayErrorMessage(formField, "rangeOverflowErrorMessage");
+      break;
+    default:
+      setValidState(formField);
+      return;
   }
+  setErrorState(formField);
 }
 
 function displayErrorMessage(formField, messageType) {
@@ -247,19 +250,21 @@ function Book(title, author, pages, readStatus) {
 }
 
 function createBookCard() {
-  let card = document.createElement("div"),
-    bookInfoContainer = createBookInfoContainer(),
-    buttonContainer = createCardButtonContainer(),
+  let card,
+    cardClassArr = ["card", "shadow"],
+    bookInfoContainer = createDivElement(["card-book-info-container"]),
+    buttonContainer = createDivElement(["card-button-container"]),
     editButton = createEditButtonElement(),
     deleteButton = createDeleteButtonElement(),
     newestBook = myLibrary[myLibrary.length - 1];
 
   if (bookGrid.classList.contains("grid-view")) {
-    card.classList.add("card-style");
+    cardClassArr.push("card-style");
   } else {
-    card.classList.add("list-style");
+    cardClassArr.push("list-style");
   }
-  card.classList.add("card", "shadow");
+  
+  card = createDivElement(cardClassArr);
   card.setAttribute("data-index", myLibrary.length - 1);
 
   newestBook.getInfo().forEach((info, i) => {
@@ -302,20 +307,14 @@ function addContextToInfo(info, index) {
   return contextualizedInfo;
 }
 
-function createBookInfoContainer() {
-  let container = document.createElement("div");
+function createDivElement(classArr) {
+  let divElement = document.createElement("div");
 
-  container.classList.add("card-book-info-container");
+  if (classArr) {
+    divElement.classList.add(...classArr);
+  }
 
-  return container;
-}
-
-function createCardButtonContainer() {
-  let container = document.createElement("div");
-
-  container.classList.add("card-button-container");
-
-  return container;
+  return divElement;
 }
 
 function createEditButtonElement() {
