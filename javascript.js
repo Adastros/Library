@@ -263,22 +263,11 @@ function createBookCard() {
   } else {
     cardClassArr.push("list-style");
   }
-  
+
   card = createDivElement(cardClassArr);
   card.setAttribute("data-index", myLibrary.length - 1);
 
-  newestBook.getInfo().forEach((info, i) => {
-    let infoField;
-
-    if (i === 0) {
-      infoField = document.createElement("h4");
-    } else {
-      infoField = document.createElement("p");
-    }
-
-    infoField.textContent = addContextToInfo(info, i);
-    bookInfoContainer.append(infoField);
-  });
+  bookInfoContainer = addBookInfoToCard(newestBook, bookInfoContainer);
 
   buttonContainer.append(editButton);
   buttonContainer.append(deleteButton);
@@ -315,6 +304,23 @@ function createDivElement(classArr) {
   }
 
   return divElement;
+}
+
+function addBookInfoToCard(newestBook, bookInfoContainer) {
+  newestBook.getInfo().forEach((info, i) => {
+    let infoField;
+
+    if (i === 0) {
+      infoField = document.createElement("h4");
+    } else {
+      infoField = document.createElement("p");
+    }
+
+    infoField.textContent = addContextToInfo(info, i);
+    bookInfoContainer.append(infoField);
+  });
+
+  return bookInfoContainer;
 }
 
 function createEditButtonElement() {
@@ -414,12 +420,6 @@ function updateBookDisplay() {
 
 function addBooktoLibrary(title, author, pages, readStatus) {
   myLibrary.push(new Book(title, author, pages, readStatus));
-}
-
-function showBooksinLibrary() {
-  myLibrary.forEach((book) => {
-    return book.getInfo();
-  });
 }
 
 function showFormOverlay() {
