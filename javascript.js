@@ -387,14 +387,14 @@ function addDeleteButtonListener(deleteButton) {
 function fillOverlayForm(cardIndex) {
   let book = myLibrary[cardIndex];
 
-  form.dataset.cardIndexEdit = cardIndex;
+  form.dataset.cardIndexTarget = cardIndex;
   book.getInfo().forEach((info, i) => {
     formFields[i].value = info;
   });
 }
 
 function editBook() {
-  let cardIndex = form.dataset.cardIndexEdit,
+  let cardIndex = form.dataset.cardIndexTarget,
     book = myLibrary[+cardIndex];
 
   Object.keys(book).forEach((key, i) => {
@@ -405,7 +405,7 @@ function editBook() {
 }
 
 function updateBookDisplay() {
-  let cardIndex = form.dataset.cardIndexEdit,
+  let cardIndex = form.dataset.cardIndexTarget,
     book = myLibrary[+cardIndex],
     cardToUpdate = document.querySelector(`[data-index="${cardIndex}"]`),
     cardFields = cardToUpdate.firstElementChild.children;
@@ -448,11 +448,7 @@ function hideDeletionConfirmationOverlay() {
 
 function clearOverlayForm() {
   for (let i = 0; i < numOfFieldsToValidate; i++) {
-    if (formFields[i].name === "readStatus") {
-      formFields[i].value = "";
-    } else {
-      formFields[i].value = "";
-    }
+    formFields[i].value = "";
   }
 }
 
@@ -517,7 +513,7 @@ overlayButtonOpen.addEventListener("click", () => {
 });
 
 overlayButtonClose.addEventListener("click", () => {
-  let cardIndex = form.dataset.cardIndexEdit;
+  let cardIndex = form.dataset.cardIndexTarget;
 
   editBookFlag = false;
   hideFormOverlay();
