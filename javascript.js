@@ -380,7 +380,7 @@ function addDeleteButtonListener(deleteButton) {
 
     deleteConfirmation.dataset.cardIndexTarget = cardIndex;
     showDeletionConfirmationOverlay();
-    shiftElementFocus(deletionButtonNo);
+    shiftElementFocus(deleteConfirmation);
   });
 }
 
@@ -509,7 +509,7 @@ function updateBookInfoDisplay(viewStyle) {
 overlayButtonOpen.addEventListener("click", () => {
   editBookFlag = false;
   showFormOverlay();
-  shiftElementFocus(firstFormInput);
+  shiftElementFocus(form);
 });
 
 overlayButtonClose.addEventListener("click", () => {
@@ -519,6 +519,7 @@ overlayButtonClose.addEventListener("click", () => {
   hideFormOverlay();
   resetForm();
 
+  // if an edit button was pressed, focus on the edit button pressed when closing the overlay
   if (cardIndex) {
     let cardTarget = document.querySelector(`[data-index="${cardIndex}"]`),
       editBtn = cardTarget.lastElementChild.firstElementChild;

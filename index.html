@@ -68,7 +68,7 @@
       </main>
     </div>
     <div class="submit-edit-form overlay">
-      <form action="" data-card-index-target="" novalidate>
+      <form action="" data-card-index-target="" tabindex="-1" novalidate>
         <div class="form-field">
           <label for="title">Title:</label>
           <span class="icon-small">
@@ -141,7 +141,11 @@
       </form>
     </div>
     <div class="delete-confirmation overlay">
-      <div class="delete-confirmation-container" data-card-index-target="">
+      <div
+        class="delete-confirmation-container"
+        data-card-index-target=""
+        tabindex="-1"
+      >
         <p>Are you sure you want to delete the book from your library?</p>
         <div class="delete-confirmation-buttons">
           <button class="delete-button">Yes</button>
