@@ -17,7 +17,26 @@ let bodyElement = document.querySelector("body"),
   numOfFieldsToValidate = formFields.length - 2,
   editBookFlag = false;
 
-let myLibrary = [];
+class Book {
+  constructor(title, author, pages, readStatus) {
+    this.title = title;
+    this.author = author;
+    this.pages = pages;
+    this.readStatus = readStatus;
+  }
+
+  get getInfo() {
+    return [this.title, this.author, this.pages, this.readStatus];
+  };
+}
+
+class Library {
+  constructor() {
+    this.library = [];
+  }
+}
+
+let myLibrary = new Library();
 
 const demoLibraryData = [
   {
@@ -238,17 +257,6 @@ function validateOnSubmit() {
   }
 }
 
-function Book(title, author, pages, readStatus) {
-  this.title = title;
-  this.author = author;
-  this.pages = pages;
-  this.readStatus = readStatus;
-
-  this.getInfo = () => {
-    return [this.title, this.author, this.pages, this.readStatus];
-  };
-}
-
 function createBookCard() {
   let card,
     cardClassArr = ["card", "shadow"],
@@ -307,7 +315,7 @@ function createDivElement(classArr) {
 }
 
 function addBookInfoToCard(newestBook, bookInfoContainer) {
-  newestBook.getInfo().forEach((info, i) => {
+  newestBook.getInfo.forEach((info, i) => {
     let infoField;
 
     if (i === 0) {
@@ -388,7 +396,7 @@ function fillOverlayForm(cardIndex) {
   let book = myLibrary[cardIndex];
 
   form.dataset.cardIndexTarget = cardIndex;
-  book.getInfo().forEach((info, i) => {
+  book.getInfo.forEach((info, i) => {
     formFields[i].value = info;
   });
 }
@@ -396,7 +404,6 @@ function fillOverlayForm(cardIndex) {
 function editBook() {
   let cardIndex = form.dataset.cardIndexTarget,
     book = myLibrary[+cardIndex];
-
   Object.keys(book).forEach((key, i) => {
     if (key !== "getInfo") {
       book[key] = formFields[i].value;
@@ -412,7 +419,7 @@ function updateBookDisplay() {
 
   // Update only elements that user can change which are the first 4 elements.
   // All other child elements ignored.
-  book.getInfo().forEach((info, i) => {
+  book.getInfo.forEach((info, i) => {
     cardFields[i].textContent = addContextToInfo(info, i);
   });
   editBookFlag = false;
